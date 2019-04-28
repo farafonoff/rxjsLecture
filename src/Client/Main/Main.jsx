@@ -1,7 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Pane from '../Pane/Pane'
+import './Main.css'
 
 export default () => {
-    return (<div><Pane/>
-    <Pane/></div>)
+    const [number, setNumber] = useState(1);
+    return (
+        <div class='page'>
+            <button onClick={() => setNumber(number + 1)}>Add panel</button>
+            <div class='main'>
+                {Array(number).fill(1).map(() => <div class='main-item'><Pane /></div>)}
+            </div>
+        </div>);
 }

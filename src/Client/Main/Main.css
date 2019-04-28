@@ -1,0 +1,11 @@
+.page {
+    display: flex;
+    flex-direction: column;
+}
+.main {
+    display: flex;
+}
+
+.main-item {
+    margin: 50px;
+}
