@@ -6,7 +6,7 @@ const source = new Observable<MessageEvent>((observer) => {
     socket.addEventListener('message', (e) => observer.next(e));
     return () => socket.close();
 }).pipe(
-    //share()
+    publish()
 );
 export function connection(): Observable<MessageEvent> {
     return source;
