@@ -48,6 +48,20 @@ describe("rxjs-marbles", () => {
         )
         result.subscribe(console.log)
     })
+    function incrementOdd(incBy) {
+        return pipe(
+            filter(x => x % 2 === 1),
+            map(x => x + incBy)
+        )
+    }
+    it("pipe works", () => {
+        const source = [1,2,3]
+        const result = from(source).pipe(
+            incrementOdd(1),
+            toArray()
+        )
+        result.subscribe(console.log)
+    })
     it("warm", marbles(m => {
         const cold = m.cold("-a-b-c-|");
         const warm = new Subject();
