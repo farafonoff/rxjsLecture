@@ -18,7 +18,6 @@ export function useChatLog(depth: number) {
 export function useObservable(observable: Observable<any>, defaultValue: any) {
     const [state, setState] = useState(defaultValue);
     useEffect(() => {
-        console.log('effegd');
         const subscription = observable.subscribe(val => setState(val))
         return () => subscription.unsubscribe();
     }, [])
