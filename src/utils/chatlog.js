@@ -1,16 +1,10 @@
-import { pipe } from "rxjs";
-import { map, tap } from "rxjs/operators";
+import { map } from "rxjs/operators";
 
-export function logArray(limit) {
+export function logBuffer(bufferLength) {
     let buffer = [];
-    return pipe(
-        tap(console.log),
-        map(message => message.data),
-        map(line => {
-            buffer.push(line);
-            buffer = buffer.slice(-limit);
-            return [...buffer];
-        }),
-        tap(console.log),
-    );
+    return map(line => {
+        buffer.push(line);
+        buffer = buffer.slice(-limit);
+        return [...buffer];
+    });
 }
