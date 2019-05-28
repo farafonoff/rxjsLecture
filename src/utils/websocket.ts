@@ -1,13 +1,22 @@
 import { Observable } from 'rxjs/Rx'
-import { share, publish, refCount } from 'rxjs/operators'
+import { share, publish, refCount, retryWhen, switchMap } from 'rxjs/operators'
+import { timer } from 'rxjs';
 
+const socket = new WebSocket('ws://127.0.0.1:8001');
 const source = new Observable<MessageEvent>((observer) => {
-    const socket = new WebSocket('ws://127.0.0.1:8001');
-    socket.addEventListener('message', (e) => observer.next(e));
-    return () => socket.close();
+    const listener = (e: MessageEvent) => observer.next(e);
+    socket.addEventListener('message', listener);
+    return () => socket.removeEventListener('message', listener);
 }).pipe(
+    retryWhen(errors => errors.pipe(
+        switchMap(err => timer(1000))
+    ))
     //share()
 );
 export function connection(): Observable<MessageEvent> {
     return source;
+}
+
+export function send(text: string) {
+    socket.send(text);
 }
