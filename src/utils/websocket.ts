@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx'
-import { share, publish, refCount, retryWhen, switchMap } from 'rxjs/operators'
+import { retryWhen, switchMap } from 'rxjs/operators'
 import { timer } from 'rxjs';
 
 const socket = new WebSocket('ws://127.0.0.1:8001');
