@@ -1,23 +1,23 @@
 var ws = require("nodejs-websocket")
+var Subject = require('rxjs/Subject').Subject;
+console.log(Subject);
+const bus = new Subject();
  
 // Scream server example: "hi" -> "HI!!!"
 var server = ws.createServer(function (conn) {
     console.log("New connection");
-    let counter = 0;
-    let timer = setInterval(() => {
-        console.log(`sending ${counter}`);
-        conn.sendText(`value: ${counter}`)
-        ++counter;
-    }, 1000);
+    const subscription = bus.subscribe((data) => {
+        conn.sendText(data);
+    })
     conn.on("text", function (str) {
-        console.log("Received "+str)
-        conn.sendText(str.toUpperCase()+"!!!")
+        bus.next(str);
     })
     conn.on("close", function (code, reason) {
         console.log("Connection closed")
-        clearInterval(timer);
+        subscription.unsubscribe();
     })
     conn.on('error', function (error) {
         console.log(error);
+        subscription.unsubscribe();
     })
 }).listen(8001)
